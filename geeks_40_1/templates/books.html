@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<ul>
+    {% for i in books %}
+    <li>
+        <img src="{{ i.image.url }}" alt="">
+        <h1>{{ i.title }}</h1>
+        <p>{{ i.created_at }}</p>
+        <button><a href="/books/{{ i.id }}">Подробнее</a></button>
+    </li>
+    {% endfor %}
+</ul>
+
+
+</body>
+</html>
