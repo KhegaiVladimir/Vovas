@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% include 'header.html' %}
 
-<img src="{{ book_id.image.url }}" alt="">
-<h1>{{ book_id.title }}</h1>
-<p>{{ book_id.created_at }}</p>
-<p>{{book_id.description}}</p>
-{% if book_id.music %}
+
+<div class="card" style="width: 18rem;">
+  <img src="{{ book_id.image.url }}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ book_id.title }}</h5>
+    <p class="card-text">{{book_id.description}}.</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">{% if book_id.music %}
     {% if book_id.music.url %}
         <audio controls>
             <source src="{{ book_id.music.url }}" type="audio/mp3">
@@ -19,12 +17,24 @@
     {% else %}
         <p>Error: The 'music' attribute has no file associated with it.</p>
     {% endif %}
-{% endif %}
-<iframe src="{{ book_id.video }}" frameborder="0"></iframe>
-<p>{{book_id.genre}}</p>
-<p>{{book_id.time_books}}</p>
-<p>{{book_id.author}}</p>
-<p>{{book_id.rate}}</p>
+{% endif %}</li>
+    <li class="list-group-item"><iframe src="{{ book_id.video }}" frameborder="0"></iframe></li>
+    <li class="list-group-item"><p>{{book_id.genre}}</p></li>
+    <li class="list-group-item"><p>{{book_id.time_books}}</p></li>
+    <li class="list-group-item">{{book_id.author}}</p></li>
+    <li class="list-group-item">{{book_id.rate}}</li>
+  </ul>
+</div>
 
-</body>
-</html>
+<h2>Отзывы</h2>
+<table border="2">
+    <tr>
+        <td>Оценка</td> <td>Отзыв</td> <td>Дата</td>
+    </tr>
+    {% for i in book_id.review_book.all%}
+    <tr>
+        <td>{{ i.stars }}</td> <td>{{ i.description}}</td> <td>{{ i.created_at}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% include 'footer.html' %}

@@ -1,22 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-<ul>
+{% include 'header.html' %}
+<center>
     {% for i in books %}
-    <li>
-        <img src="{{ i.image.url }}" alt="">
-        <h1>{{ i.title }}</h1>
-        <p>{{ i.created_at }}</p>
-        <button><a href="/books/{{ i.id }}">Подробнее</a></button>
-    </li>
+        <div class="card" style="width: 18rem;">
+          <img src="{{ i.image.url }}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{ i.title }}</h5>
+            <button><a href="/books/{{ i.id }}">Подробнее</a></button>-->
+              <p class="card-text">{{ i.created_at }}</p>
+          </div>
+        </div>
     {% endfor %}
-</ul>
-
-
-</body>
-</html>
+</center>
+{% include 'footer.html' %}
