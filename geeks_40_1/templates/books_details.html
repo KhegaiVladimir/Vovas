@@ -2,7 +2,9 @@
 
 
 <div class="card" style="width: 18rem;">
-  <img src="{{ book_id.image.url }}" class="card-img-top" alt="...">
+  {% if book_id.image %}
+        <img src="{{ book_id.image.url }}" class="card-img-top" alt="...">
+    {% endif %}
   <div class="card-body">
     <h5 class="card-title">{{ book_id.title }}</h5>
     <p class="card-text">{{book_id.description}}.</p>
@@ -37,4 +39,12 @@
     </tr>
     {% endfor %}
 </table>
+<br>
+<br>
+<br>
+<br>
+<br>
+<button><a href="/books/{{ book_id.id }}/delete/">Удалить</a></button>
+<button><a href="/books/{{ book_id.id }}/update/">Редактировать</a></button>
+<button><a href="/books/{{ book_id.id }}/create_review/">Добавить комментарий</a></button>
 {% include 'footer.html' %}

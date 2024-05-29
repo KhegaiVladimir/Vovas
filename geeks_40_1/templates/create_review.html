@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>-</title>
+</head>
+<body>
+
+<h1>Добавить комментарий</h1>
+<form action="/books/{{ book_id }}/create_review/" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить</button>
+</form>
+
+
+</body>
+</html>

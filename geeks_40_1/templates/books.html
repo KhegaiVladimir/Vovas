@@ -1,14 +1,19 @@
 {% include 'header.html' %}
+
+<button><a href="/create_books/">Добавить книгу</a></button>
 <center>
     {% for i in books %}
         <div class="card" style="width: 18rem;">
-          <img src="{{ i.image.url }}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ i.title }}</h5>
-            <button><a href="/books/{{ i.id }}">Подробнее</a></button>-->
-              <p class="card-text">{{ i.created_at }}</p>
-          </div>
+            {% if i.image %}
+                <img src="{{ i.image.url }}" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ i.title }}</h5>
+                <button><a href="/books/{{ i.id }}">Подробнее</a></button>
+                <p class="card-text">{{ i.created_at }}</p>
+            </div>
         </div>
     {% endfor %}
 </center>
+
 {% include 'footer.html' %}
