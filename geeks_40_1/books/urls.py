@@ -1,14 +1,15 @@
 from django.urls import path
-from .views import name_view, hobby_view, time_view, books_view, books_details_view, create_books_view, delete_books_view, edit_books_view, create_review_view
+from . import views
+
 
 urlpatterns = [
-    path('name/', name_view, name='name and age'),
-    path('hobby/', hobby_view, name='my hobby'),
-    path('time/', time_view, name='time'),
-    path('', books_view, name='books'),
-    path('books/<int:id>/', books_details_view, name='books_details'),
-    path('books/<int:id>/delete/', delete_books_view, name='delete_book'),
-    path('create_books/', create_books_view, name='create_books'),
-    path('books/<int:id>/update/', edit_books_view, name='edit_book'),
-    path('books/<int:id>/create_review/', create_review_view, name='create review'),
+    path('name/', views.NameView.as_view(), name='name and age'),
+    path('hobby/', views.HobbyVIew.as_view(), name='my hobby'),
+    path('time/', views.TimeView.as_view(), name='time'),
+    path('', views.BooksView.as_view(), name='books'),
+    path('books/<int:id>/', views.BooksDetailsView.as_view(), name='books_details'),
+    path('books/<int:id>/delete/', views.DeleteBooksView.as_view(), name='delete_book'),
+    path('create_books/', views.CreateBookView.as_view(), name='create_books'),
+    path('books/<int:id>/update/', views.EditBookView.as_view(), name='edit_book'),
+    path('books/<int:id>/create_review/', views.CreateReviewView.as_view(), name='create review'),
 ]
