@@ -7,22 +7,26 @@ from django.views import generic
 
 time = datetime.datetime.now()
 
+
 class NameView(generic.View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse('Меня зовут Владимир, мне 16 лет')
+        return HttpResponse("Меня зовут Владимир, мне 16 лет")
 
 
 class HobbyVIew(generic.View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse('Моё хобби это программирование')
+        return HttpResponse("Моё хобби это программирование")
+
 
 # def hobby_view(request):
 #     if request.method == 'GET':
 #         return HttpResponse('Моё хобби это программирование')
 
+
 class TimeView(generic.View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse(f'Нынешнее время: {time}')
+        return HttpResponse(f"Нынешнее время: {time}")
+
 
 # def time_view(request):
 #     if request.method == 'GET':
@@ -30,27 +34,27 @@ class TimeView(generic.View):
 
 
 class BooksView(generic.ListView):
-    template_name = 'books.html'
-    context_object_name = 'books'
+    template_name = "books.html"
+    context_object_name = "books"
     model = models.Books
 
     def get_queryset(self):
-        return self.model.objects.filter().order_by('-id')
+        return self.model.objects.filter().order_by("-id")
+
 
 # def books_view(request):
 #     if request.method == 'GET':
 #         books = Books.objects.filter().order_by('-id')
 #         return render(request, template_name='books.html', context={'books':books})
 
+
 class BooksDetailsView(generic.DetailView):
-    template_name = 'books_details.html'
-    context_object_name = 'book_id'
+    template_name = "books_details.html"
+    context_object_name = "book_id"
 
     def get_object(self, **kwargs):
-        book_id = self.kwargs.get('id')
+        book_id = self.kwargs.get("id")
         return get_object_or_404(models.Books, id=book_id)
-
-
 
 
 # def books_details_view(request, id):
@@ -58,17 +62,15 @@ class BooksDetailsView(generic.DetailView):
 #         book_id = get_object_or_404(Books, id=id)
 #         return render(request, template_name='books_details.html', context={'book_id':book_id})
 
-class CreateReviewView(generic.CreateView):
-    template_name = 'create_review.html'
-    form_class = forms.ReviewForm
-    success_url = '/'
 
+class CreateReviewView(generic.CreateView):
+    template_name = "create_review.html"
+    form_class = forms.ReviewForm
+    success_url = "/"
 
     def from_valid(self, form):
         print(form.cleaned_data)
         return super(CreateReviewView, self).form_valid(form=form)
-
-
 
 
 # def create_review_view(request, id):
@@ -81,13 +83,15 @@ class CreateReviewView(generic.CreateView):
 #         form = forms.ReviewForm()
 #     return render(request, 'create_review.html', {'form': form, 'book_id': id})
 
+
 class DeleteBooksView(generic.DeleteView):
-    template_name = 'delete_books.html'
-    success_url = '/'
+    template_name = "delete_books.html"
+    success_url = "/"
 
     def get_object(self, **kwargs):
-        book_id = self.kwargs.get('id')
+        book_id = self.kwargs.get("id")
         return get_object_or_404(models.Books, id=book_id)
+
 
 # def delete_books_view(request, id):
 #     book = get_object_or_404(Books, id=id)
@@ -96,13 +100,14 @@ class DeleteBooksView(generic.DeleteView):
 
 
 class CreateBookView(generic.CreateView):
-    template_name = 'create_books.html'
+    template_name = "create_books.html"
     form_class = forms.BooksForm
-    success_url = '/'
+    success_url = "/"
 
     def from_valid(self, form):
         print(form.cleaned_data)
         return super(CreateBookView, self).form_valid(form=form)
+
 
 # def create_books_view(request):
 #     if request.method == 'POST':
@@ -116,12 +121,12 @@ class CreateBookView(generic.CreateView):
 
 
 class EditBookView(generic.UpdateView):
-    template_name = 'edit.html'
+    template_name = "edit.html"
     form_class = forms.BooksForm
-    success_url = '/'
+    success_url = "/"
 
     def get_object(self, **kwargs):
-        book_id = self.kwargs.get('id')
+        book_id = self.kwargs.get("id")
         return get_object_or_404(models.Books, id=book_id)
 
     def form_valid(self, form):
@@ -140,16 +145,16 @@ class EditBookView(generic.UpdateView):
 #         form = forms.BooksForm(instance=book_id)
 #     return render(request, 'edit.html', {'form': form, book_id: 'book_id' })
 
+
 class SearchBooksView(generic.ListView):
-    template_name = 'books.html'
-    context_object_name = 'books'
+    template_name = "books.html"
+    context_object_name = "books"
     paginate_by = 5
 
     def get_queryset(self):
-        return models.Books.objects.filter(title__icontains=self.request.GET.get('q'))
-
+        return models.Books.objects.filter(title__icontains=self.request.GET.get("q"))
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['q'] = self.request.GET.get('q')
+        context["q"] = self.request.GET.get("q")
         return context

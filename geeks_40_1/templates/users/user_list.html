@@ -1,36 +1,53 @@
-<!DOCTYPE html>
+{% include 'header.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 40px 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        .list-group-item {
+            background-color: transparent;
+            border-color: rgba(0,0,0,.125);
+        }
+    </style>
 </head>
 <body>
-
-<div>
-    <ul>
-        {% for i in object_list %}
-
-            <li>
-            <h1>Привет Читатель - {{i.username}}</h1>
-                <p>Почта - {{ i.email }}</p>
-                <p>Имя - {{ i.first_name }}</p>
-                <p>Возраст - {{ i.age }}</p>
-                {% if i.allowed_ganres %}
-                <p>Вам можно читать - {{ i.allowed_ganres }} </p>
-                {% else %}
-                <p>Ваши жанры не определены</p>
-                {% endif %}
-                <p>Ваша любимая книга - {{ i.favourite_book }}</p>
-            </li>
-
-        {% endfor %}
-    </ul>
-    <form action="{% url 'users:login' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Выйти</button>
-    </form>
-
-</div>
-
+    <div class="container">
+        <ul class="list-group">
+            {% for i in object_list %}
+                <li class="list-group-item">
+                    <h1 class="mb-4">Привет, Читатель - {{ i.username }}</h1>
+                    <p class="mb-1">Почта: {{ i.email }}</p>
+                    <p class="mb-1">Имя: {{ i.first_name }}</p>
+                    <p class="mb-1">Возраст: {{ i.age }}</p>
+                    {% if i.allowed_genres %}
+                        <p class="mb-1">Вам можно читать: {{ i.allowed_genres }}</p>
+                    {% else %}
+                        <p class="mb-1">Ваши жанры не определены</p>
+                    {% endif %}
+                    <p class="mb-1">Ваша любимая книга: {{ i.favourite_book }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        <form action="{% url 'users:login' %}" method="post" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Выйти</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
+{% include 'footer.html' %}

@@ -1,21 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-  <ol>
+{% include 'header.html' %}
+<center>
+  <div class="card" style="width: 18rem;">
     {% for i in child_cloth %}
-      <li>
-        <p>{{ i.name }}</p>
-        <p>{{ i.price }}</p>
+      <div class="card-body">
+        <p class="card-text">{{ i.name }}</p>
+        <p class="card-text">{{ i.price }}</p>
         {% for j in i.tags.all %}
-          <p>#{{ j.name }}</p>
+        <p class="card-text">#{{ j.name }}</p>
         {% endfor %}
-      </li>
+      </div>
     {% endfor %}
-  </ol>
-
-</body>
-</html>
+</div>
+</center>
+{% include 'footer.html' %}
