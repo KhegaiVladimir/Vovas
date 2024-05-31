@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <ul>
+        {% for i in object_list %}
+
+            <li>
+            <h1>Привет Читатель - {{i.username}}</h1>
+                <p>Почта - {{ i.email }}</p>
+                <p>Имя - {{ i.first_name }}</p>
+                <p>Возраст - {{ i.age }}</p>
+                {% if i.allowed_ganres %}
+                <p>Вам можно читать - {{ i.allowed_ganres }} </p>
+                {% else %}
+                <p>Ваши жанры не определены</p>
+                {% endif %}
+                <p>Ваша любимая книга - {{ i.favourite_book }}</p>
+            </li>
+
+        {% endfor %}
+    </ul>
+    <form action="{% url 'users:login' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Выйти</button>
+    </form>
+
+</div>
+
+</body>
+</html>
