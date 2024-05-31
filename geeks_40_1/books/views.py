@@ -140,3 +140,16 @@ class EditBookView(generic.UpdateView):
 #         form = forms.BooksForm(instance=book_id)
 #     return render(request, 'edit.html', {'form': form, book_id: 'book_id' })
 
+class SearchBooksView(generic.ListView):
+    template_name = 'books.html'
+    context_object_name = 'books'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return models.Books.objects.filter(title__icontains=self.request.GET.get('q'))
+
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q')
+        return context
