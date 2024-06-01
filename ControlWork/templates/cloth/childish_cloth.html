@@ -1,0 +1,15 @@
+{% include 'header.html' %}
+<center>
+  <div class="card" style="width: 18rem;">
+    {% for i in childish_cloth %}
+      <div class="card-body">
+        <p class="card-text">{{ i.name }}</p>
+        <p class="card-text">{{ i.price }}</p>
+        {% for j in i.tags.all %}
+        <p class="card-text">#{{ j.name }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+</div>
+</center>
+{% include 'footer.html' %}

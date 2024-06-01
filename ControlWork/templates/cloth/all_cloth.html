@@ -1,0 +1,17 @@
+{% include 'header.html' %}
+<center>
+  <div class="card" style="width: 18rem;">
+    {% for i in cloth %}
+      <div class="card-body">
+        <p class="card-text">{{ i.name }}</p>
+        <p class="card-text">{{ i.price }}</p>
+        {% for j in i.tags.all %}
+        <p class="card-text">#{{ j.name }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <button><a href="/elder_cloth/">Пенсионерская одежда</a></button>
+  <button><a href="/childish_cloth/">Детская одежда</a></button>
+</center>
