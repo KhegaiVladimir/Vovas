@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Movie, Director, Review
-from .serializers import MovieSerializer, DirectorSerializer, ReviewSerializer
+from .serializers import MovieSerializer, DirectorsInfoSerializer, ReviewSerializer, DirectorsSerializer
 
 
 @api_view(['GET'])
@@ -24,7 +24,7 @@ def movie_detail_api_view(request, id):
 @api_view(['GET'])
 def directors_list_api_view(request):
     data = Director.objects.all()
-    list_ = DirectorSerializer(data, many=True).data
+    list_ = DirectorsInfoSerializer(data, many=True).data
     return Response(data=list_)
 
 
@@ -34,7 +34,7 @@ def director_detail_api_view(request, id):
         director = Director.objects.get(id=id)
     except Director.DoesNotExist:
         return Response(data={'error': 'Director does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    list_ = DirectorSerializer(director).data
+    list_ = DirectorsInfoSerializer(director).data
     return Response(data=list_)
 
 @api_view(['GET'])
@@ -52,3 +52,15 @@ def review_detail_api_view(request, id):
         return Response(data={'error': 'Review does not exist'}, status=status.HTTP_404_NOT_FOUND)
     list_ = ReviewSerializer(data).data
     return Response(data=list_)
+
+@api_view(['GET'])
+def movies_reviews_list_api_view(request):
+    data = Movie.objects.prefetch_related('reviews').all()
+    list_ = MovieSerializer(data, many=True).data
+    return Response(data=list_)
+
+@api_view(['GET'])
+def directors_list_api_view(request):
+    directors = Director.objects.all()
+    serializer = DirectorsSerializer(directors, many=True)
+    return Response(serializer.data)
