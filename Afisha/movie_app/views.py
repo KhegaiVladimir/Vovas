@@ -50,17 +50,18 @@ def movie_detail_api_view(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def directors_list_api_view(request):
-    if request.method == 'GET':
-        data = Director.objects.all()
-        list_ = DirectorsInfoSerializer(data, many=True).data
+        directors = Director.objects.all()
+        list_ = DirectorsSerializer(directors, many=True).data
         return Response(data=list_)
 
-    elif request.method == 'POST':  # добавление объекта
-        name = request.data.get('name')
-        director = Director.objects.create(name=name)
-        return Response(data={'director_id': director.id, "name": director.name}, status=status.HTTP_201_CREATED)
+@api_view(['POST'])
+def directors_create_api_view(request):
+    name = request.data.get('name')
+    director = Director.objects.create(name=name)
+    director.save()
+    return Response(data={'director_id': director.id}, status=status.HTTP_201_CREATED)
 
 
 
@@ -82,7 +83,7 @@ def director_detail_api_view(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET' 'POST'])
+@api_view(['GET', 'POST'])
 def reviews_list_api_view(request):
     if request.method == 'GET':
         data = Review.objects.all()
