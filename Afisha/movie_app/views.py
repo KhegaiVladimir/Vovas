@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Movie, Director, Review
-from .serializers import MovieSerializer, DirectorsInfoSerializer, ReviewSerializer, DirectorsSerializer
+from .serializers import MovieSerializer, DirectorsInfoSerializer, ReviewSerializer, DirectorsSerializer,MovieValidateSerializer, DirectorValidateSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -14,10 +14,12 @@ def movies_list_api_view(request):
         return Response(data=list_)
 
     elif request.method == 'POST':  #добавление объекта
-        title = request.data.get('title')
-        description = request.data.get('description')
-        duration = request.data.get('duration')
-        director_id = request.data.get('director_id')
+        serializer = MovieValidateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        title = serializer.validated_data.get('title')
+        description = serializer.validated_data.get('description')
+        duration = serializer.validated_data.get('duration')
+        director_id = serializer.validated_data.get('director_id')
         movie = Movie.objects.create(
             title=title,
             description=description,
@@ -38,10 +40,12 @@ def movie_detail_api_view(request, id):
         data = MovieSerializer(movie).data
         return Response(data=data)
     elif request.method == 'PUT':  #изменение объекта
-        movie.title = request.data.get('title')
-        movie.description = request.data.get('description')
-        movie.duration = request.data.get('duration')
-        movie.director_id = request.data.get('director_id')
+        serializer = MovieValidateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        movie.title = serializer.validated_data.get('title')
+        movie.description = serializer.validated_data.get('description')
+        movie.duration = serializer.validated_data.get('duration')
+        movie.director_id = serializer.validated_data.get('director_id')
         movie.save()
 
         return Response(status=status.HTTP_200_OK)
@@ -50,18 +54,19 @@ def movie_detail_api_view(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def directors_list_api_view(request):
+    if request.method == 'GET':
         directors = Director.objects.all()
         list_ = DirectorsSerializer(directors, many=True).data
         return Response(data=list_)
-
-@api_view(['POST'])
-def directors_create_api_view(request):
-    name = request.data.get('name')
-    director = Director.objects.create(name=name)
-    director.save()
-    return Response(data={'director_id': director.id}, status=status.HTTP_201_CREATED)
+    elif request.method == 'POST':
+        serializer = DirectorValidateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        name = serializer.validated_data.get('name')
+        director = Director.objects.create(name=name)
+        director.save()
+        return Response(data={'director_id': director.id}, status=status.HTTP_201_CREATED)
 
 
 
@@ -75,7 +80,9 @@ def director_detail_api_view(request, id):
         list_ = DirectorsInfoSerializer(director).data
         return Response(data=list_)
     elif request.method == 'PUT':
-        director.name = request.data.get('name')
+        serializer = DirectorValidateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        director.name = serializer.validated_data   .get('name')
         director.save()
         return Response(status=status.HTTP_200_OK)
     elif request.method == 'DELETE':
@@ -123,8 +130,4 @@ def movies_reviews_list_api_view(request):
     return Response(data=list_)
 
 
-@api_view(['GET'])
-def directors_list_api_view(request):
-    directors = Director.objects.all()
-    serializer = DirectorsSerializer(directors, many=True)
-    return Response(serializer.data)
+
