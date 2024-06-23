@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Movie, Director, Review
-from .serializers import MovieSerializer, DirectorsInfoSerializer, ReviewSerializer, DirectorsSerializer,MovieValidateSerializer, DirectorValidateSerializer
+from .serializers import MovieSerializer, DirectorsInfoSerializer, ReviewSerializer, DirectorsSerializer,MovieValidateSerializer, DirectorValidateSerializer, ReviewValidateSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -97,6 +97,8 @@ def reviews_list_api_view(request):
         list_ = ReviewSerializer(data, many=True).data
         return Response(data=list_)
     elif request.method == 'POST':
+        serializer = ReviewValidateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         text = request.data.get('text')
         movie_id = request.data.get('movie_id')
         stars = request.data.get('stars')
@@ -113,6 +115,8 @@ def review_detail_api_view(request, id):
         list_ = ReviewSerializer(review).data
         return Response(data=list_)
     elif request.method == 'PUT':
+        serializer = ReviewValidateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         review.text = request.data.get('text')
         review.movie_id = request.data.get('movie_id')
         review.stars = request.data.get('stars')
